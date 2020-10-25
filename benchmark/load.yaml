@@ -1,0 +1,12 @@
+phantom:
+  address: app:9091 # [Target's address]:[target's port]
+  uris:
+    - /
+  load_profile:
+    load_type: rps # schedule load by defining requests per second
+    schedule: line(15000, 20000, 15s)
+  writelog:
+console:
+  enabled: true # enable console output
+telegraf:
+  enabled: false # let's disable telegraf monitoring for the first time

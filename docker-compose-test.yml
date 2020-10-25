@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  tank:
+    image: direvius/yandex-tank
+    volumes:
+      - ./tank:/var/loadtest
+    depends_on:
+      - app
+

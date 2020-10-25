@@ -1,0 +1,36 @@
+version: '3'
+
+networks:
+  router:
+    external:
+      name: router
+volumes:
+  fs_clickhouse:
+services:
+  app:
+    image: golang
+    labels:
+      traefik.enable: '1'
+      traefik.frontend.rule: 'Host:scribbler.box'
+      traefik.docker.network: 'router'
+      traefik.port: '8080'
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./.env:/var/app/.env
+    depends_on:
+      - clickhouse
+    environment:
+      ENV: "local"
+    networks:
+      - router
+      - default
+
+  clickhouse:
+    image: yandex/clickhouse-server
+    environment:
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+    volumes:
+      - fs_clickhouse:/var/lib/storage
